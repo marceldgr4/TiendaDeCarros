@@ -1,17 +1,15 @@
 server:
-  port: 8083
+  port: 8082
 
 spring:
   application:
     name: payment-service
   datasource:
-    driver-class-name: org.h2.Driver
-    dbcp2:
-      username: sa
-      password: password
-  h2:
-    console:
-      enabled: true
+    url: jdbc:postgresql://postgres-payment:5432/paymentdb
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: password
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -27,4 +25,14 @@ eureka:
 feign:
   hystrix:
     enable:true
+logging:
+  level:
+    com.example: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 
