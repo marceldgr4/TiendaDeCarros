@@ -1,24 +1,18 @@
 package CarStore.BookingService.Client;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
+import CarStore.BookingService.Config.FeignClientConfig;
+
+import CarStore.BookingService.Dto.CarReserveResponse.CarReserveResponse;
+
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "cars-service")
+
+@FeignClient(name = "cars-service",url= "http://localhost:8080",configuration = FeignClientConfig.class)
 public interface CarsClient {
-    @GetMapping("/api/cars/{id}")
-    @CircuitBreaker(name = "carsClient",fallbackMethod = "fallbackGetCarById")
-    @Retry(name = "carsClient")
-    CarDto getCarById(@PathVariable("id") Long id);
+    @PostMapping(value = "/api/Car-Service/reserve",consumes = MediaType.APPLICATION_JSON_VALUE)
+    CarReserveResponse carReserve(@RequestParam Long id);
 
-    default CarDto fallbackGetCarById(Long id, Throwable throwable) {
-        CarDto carDto = new CarDto();
-        carDto.setId(id);
-        carDto.setModel("Fallback Model");
-        carDto.setVehicleBrand("Fallback Brand");
-        carDto.setAvailability("unavailable");
-        return carDto;
-    }
 }
