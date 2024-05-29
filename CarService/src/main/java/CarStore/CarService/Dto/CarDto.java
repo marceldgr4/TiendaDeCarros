@@ -12,5 +12,7 @@ public class CarDto {
     private Long idCars;
     private String Model;
     private String vehicleBrand;
-    private String availability;
+    private String Availability;
+
+
 }

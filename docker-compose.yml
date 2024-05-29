@@ -35,9 +35,9 @@ services:
       POSTGRES_USER: tiendaCars
       POSTGRES_PASSWORD: Test123
     ports:
-      - "5432:5432"
+      - "5435:5432"
     expose:
-      - "5432"
+      - "5435"
 
   ### PostgreSQL database for Payments
   db-payments:

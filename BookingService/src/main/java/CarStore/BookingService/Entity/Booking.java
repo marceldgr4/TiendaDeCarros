@@ -1,10 +1,12 @@
 package CarStore.BookingService.Entity;
 
+import CarStore.BookingService.Enums.BookingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -15,26 +17,23 @@ import java.time.LocalDate;
 @Table(name = "Booking")
 public class Booking {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private Long idBooking;
 
     @Column(nullable = false)
     @NotNull
-    private Long idCars;
+    private Long CarsId;
 
     @Column(nullable = false)
     @NotNull
-    private String Customer_Name;
+    private Long CustomerId;
 
-    @Column(nullable = false)
-    @NotNull
-    private String Status;
+   @Enumerated(EnumType.STRING)
+   private BookingStatus Status;
 
-    @Column(nullable = false)
-    @NotNull
-    private LocalDate StartDate;
+  @Temporal(TemporalType.TIMESTAMP)
+  private LocalDateTime StartDate;
 
-    @Column(nullable = false)
-    @NotNull
-    private LocalDate EndDate;
+  @Temporal(TemporalType.TIMESTAMP)
+  private LocalDateTime EndDate;
 }
