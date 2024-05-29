@@ -10,14 +10,17 @@ services:
     environment:
       - EUREKA_SERVER_ENABLESELF_PRESERVATION=false
       - EUREKA_SERVER_WAITTIMEINMS_WHEN_SYNC_EMPTY=0
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+      - EUREKA_SERVER_ENABLE_SELF_PRESERVATION=false
 
   ### PostgreSQL database for Cars
   db-car-inventory:
-    container_name: db-car-inventory
+    container_name: BD-Cars
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: car_inventory_db
+      POSTGRES_DB: Cars_db
       POSTGRES_USER: tiendaCars
       POSTGRES_PASSWORD: Test123
     ports:
@@ -27,7 +30,7 @@ services:
 
   ### PostgreSQL database for Booking
   db-booking:
-    container_name: db-booking
+    container_name: BD-Booking
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
@@ -41,7 +44,7 @@ services:
 
   ### PostgreSQL database for Payments
   db-payments:
-    container_name: db-payments
+    container_name: BD_payments
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
@@ -64,7 +67,7 @@ services:
       - db-car-inventory
       - eureka-server
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db-car-inventory:5432/car_inventory_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-car-inventory:5432/BD_Cars
       SPRING_DATASOURCE_USERNAME: tiendaCars
       SPRING_DATASOURCE_PASSWORD: Test123
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
@@ -109,3 +112,11 @@ services:
       - STORAGE_TYPE=mem
     ports:
       - "9411:9411"
+
+  api-gateway:
+    image: your-api-gateway-image
+    container_name: api-gateway
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker

@@ -1,5 +1,7 @@
 package CarStore.PaymentService.Entity;
 
+import CarStore.PaymentService.Enum.PaymentMethod;
+import CarStore.PaymentService.Enum.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,13 +11,19 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-@Table(name = "Paymesnt")
+@Table(name = "Payment")
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private Long id;
     @Column(nullable = false)
-    private Long BookingId;
+    private Long idBooking;
+
+    @Column(nullable = false)
+    private Long idClient;
+
+    @Column(nullable = false)
+    private  Long transactionId;
 
     @Column(nullable = false)
     private  String CreditCard;
@@ -23,18 +31,15 @@ public class Payment {
     @Column(nullable = false)
     private  Double Amount;
 
-    @Column(nullable = false)
-    private  String  Status;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus Status;
 
-    @Column(nullable = false)
-    private String PaymentMethod;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod Method;
 
     @Column(nullable = false)
     private  String PaymentDate;
 
 
-
-    @Column(nullable = false)
-    private  Long transactionId;
 
 }

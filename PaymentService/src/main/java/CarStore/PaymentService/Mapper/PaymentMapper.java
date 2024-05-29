@@ -1,12 +1,15 @@
 package CarStore.PaymentService.Mapper;
 
-import CarStore.PaymentService.Dto.PaymentDto;
+import CarStore.PaymentService.Dto.CreartePaymentDto;
+import CarStore.PaymentService.Dto.ResponsePaymentDto;
 import CarStore.PaymentService.Entity.Payment;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 
 @Mapper(componentModel = "spring")
 public interface PaymentMapper {
-    PaymentDto toDto(Payment payment);
-    Payment toEntity(PaymentDto paymentDto);
+    @Mapping(target = "id", ignore = true)
+    ResponsePaymentDto toDto(Payment payment);
+    Payment toEntity(CreartePaymentDto creartePaymentDto);
 }
