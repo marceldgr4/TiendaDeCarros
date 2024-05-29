@@ -8,4 +8,6 @@ public class CarDto {
     private String Model;
     private String VehicleBrand;
     private String Availability;
+
+
 }

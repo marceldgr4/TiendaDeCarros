@@ -14,7 +14,7 @@ import lombok.*;
     @Table(name="Cars")
     public class Cars {
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.UUID)
         private Long Id_Cars;
         @Column(nullable = false)
         private String Model;
@@ -23,7 +23,7 @@ import lombok.*;
         private  String Vehicle_brand;
 
         @Column(nullable = false)
-        private String Availability;
+        private Boolean Availability;
 
         public Cars UpdateCars(Cars cars) {
             return new Cars(this.Id_Cars, cars.Model, cars.Vehicle_brand, cars.Availability);

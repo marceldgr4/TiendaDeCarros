@@ -1,38 +1,38 @@
 package CarStore.CarService.Controller;
 
-import CarStore.CarService.Dto.CarDto;
-import CarStore.CarService.Service.CarsService;
+import CarStore.CarService.Dto.CarReserver_reposonse;
+import CarStore.CarService.Dto.CreateCarDto;
+import CarStore.CarService.Dto.ResponsesCarDto;
+import CarStore.CarService.Service.CarService_Impl;
+import lombok.AllArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/cars")
+@RequestMapping("api/Cars")
+@AllArgsConstructor
 public class CarsController {
-
-    private CarsService carsService;
-
-    @GetMapping
-    public List<CarDto> getAllCars(){
-        return carsService.getAllCars();
+    private final CarService_Impl carService;
+    @GetMapping("/Availability")
+    public ResponseEntity<List<ResponsesCarDto>> listResponseEntity(){
+        return ResponseEntity.ok().body(this.carService.listAvailable());
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<CarDto> getCarsById(@PathVariable Long id){
-        return carsService.getCarById(id)
-                .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    @PostMapping("")
+    public ResponseEntity<ResponsesCarDto> crear(@RequestBody  CreateCarDto createCarDto){
+        return  ResponseEntity.status(HttpStatus.CREATED).body(this.carService.create(createCarDto));
+        
     }
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public CarDto createCar(@RequestBody CarDto carDto){
-        return carsService.addCar(carDto);
+    @PostMapping("/reveserve")
+    public ResponseEntity<CarReserver_reposonse> postMethodName(@RequestParam Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(this.carService.reserveCar(id));
     }
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CarDto> deleteCar(@PathVariable Long id){
-        carsService.deleteCar(id);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/return")
+    public ResponseEntity<String> returnCars(@RequestParam Long id){
+        this.carService.returnCars(id);
+        return  ResponseEntity.ok().body("the cars returns ok");
     }
 }
